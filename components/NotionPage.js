@@ -35,6 +35,25 @@ const NotionPage = ({ post, className }) => {
     autoScrollToHash()
   }, [])
 
+
+  useEffect(() => {
+    if (isBrowser) {
+      const notionArticle = document.getElementById('notion-article')
+      if (notionArticle) {
+        const iframes = notionArticle.querySelectorAll('iframe')
+        iframes.forEach(iframe => {
+          const src = iframe.getAttribute('src') || ''
+          // console.log('iframe src:', src)
+          if (src.includes('filemoon')) {
+            // 增加圆角样式
+            iframe.style.borderRadius = '12px'
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')
+          }
+        })
+      }
+    }
+  }, [post])
+
   // 页面文章发生变化时会执行的勾子
   useEffect(() => {
     // 相册视图点击禁止跳转，只能放大查看图片
